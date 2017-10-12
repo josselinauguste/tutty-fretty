@@ -3,6 +3,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="IO.fs" />
+    <Compile Include="Fretboard.fs" />
+    <Compile Include="FretboardView.fs" />
+    <Compile Include="Game.fs" />
+    <Compile Include="GameRenderer.fs" />
+    <Compile Include="App.fs" />
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
