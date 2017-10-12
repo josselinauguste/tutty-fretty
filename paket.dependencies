@@ -1,0 +1,15 @@
+source https://nuget.org/api/v2
+storage:none
+
+clitool dotnet-fable
+nuget Fable.Core
+nuget Fable.Import.Browser
+nuget FAKE
+nuget FSharp.Core
+
+group Test
+  source https://nuget.org/api/v2
+
+  nuget Expecto
+  nuget FsCheck
+  nuget Expecto.FsCheck
