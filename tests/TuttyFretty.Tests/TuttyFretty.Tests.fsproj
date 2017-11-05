@@ -10,6 +10,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Febus.Tests.fs" />
+    <Compile Include="Fretboard.Tests.fs" />
+    <Compile Include="Game.Tests.fs" />
     <Compile Include="Main.fs" />
     <None Include="App.config" />
   </ItemGroup>
