@@ -9,6 +9,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Febus.Tests.fs" />
     <Compile Include="Main.fs" />
     <None Include="App.config" />
   </ItemGroup>
