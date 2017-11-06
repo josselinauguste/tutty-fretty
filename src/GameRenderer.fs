@@ -47,4 +47,4 @@ let init (container: Browser.HTMLElement) (initialState: Game.GameState) =
   rescale (Browser.window.innerWidth)
   redraw 0.
   container.style.display <- "block"
-  (fun s -> state <- s; s)
+  (fun s -> state <- s; ())
