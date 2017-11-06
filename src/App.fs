@@ -9,7 +9,7 @@ let init () =
 let update _msg model =
   model
 
-let setState = GameRenderer.init (Browser.document.getElementById("fretboard")) (init())
+let setState = GameRenderer.init (Browser.document.getElementById("fretboard")) (init  ())
 
 Program.mkSimple init update (fun model _ -> setState model)
 |> Program.run
