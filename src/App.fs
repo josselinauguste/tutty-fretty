@@ -4,12 +4,23 @@ open Fable.Import
 open Elmish
 
 let init () =
-  Game.init
+  Game.InGame Game.init
 
-let update _msg model =
-  model
+type Msg =
+| ChooseNote of int
 
-let setState = GameRenderer.init (Browser.document.getElementById("fretboard")) (init  ())
+let update msg state =
+  match msg with
+  | ChooseNote choice ->
+    match state with
+    | Game.InGame gameState ->
+      let note = gameState.NotePropositions.[choice]
+      match Game.verifySolution gameState note with
+      | Ok _ -> Game.Won
+      | Error _ -> Game.Failed
+    | _ -> state
 
-Program.mkSimple init update (fun model _ -> setState model)
+let setState = GameRenderer.init (Browser.document.getElementById("fretboard")) (init ()) ChooseNote
+
+Program.mkSimple init update setState
 |> Program.run

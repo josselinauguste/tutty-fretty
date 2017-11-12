@@ -5,6 +5,11 @@ type GameState = {
   NotePropositions: Febus.Note list;
 }
 
+type State =
+| InGame of GameState
+| Won
+| Failed
+
 let proposeSolutions generator currentNotePosition =
   let note = currentNotePosition |> Fretboard.positionToNote
   let baseNote =

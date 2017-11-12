@@ -23,14 +23,35 @@ let private drawMarker (ctx: Browser.CanvasRenderingContext2D) (x, y, radius) =
   ctx.textBaseline <- "middle"
   ctx.fillText("?", x, y)
 
-let private draw ctx viewport (state: Game.GameState) =
+let private draw ctx viewport = function
+| Game.InGame state ->
   state.CurrentNote
     |> FretboardView.projectPosition viewport
     |> drawMarker ctx
+| Game.Won ->
+  ctx.fillStyle <- !^"green"
+  ctx.font <- sprintf "%ipx sans-serif" 14
+  ctx.textAlign <- "center"
+  ctx.textBaseline <- "middle"
+  ctx.fillText("WON :-)", viewport.Width / 2., viewport.Height / 2.)
+| Game.Failed ->
+  ctx.fillStyle <- !^"red"
+  ctx.font <- sprintf "%ipx sans-serif" 14
+  ctx.textAlign <- "center"
+  ctx.textBaseline <- "middle"
+  ctx.fillText("FAILED!", viewport.Width / 2., viewport.Height / 2.)
 
-let init (container: Browser.HTMLElement) (initialState: Game.GameState) =
+let private drawUI (ctx: Browser.HTMLElement) _viewport = function
+| Game.InGame state ->
+  let solutionButtons = ctx.getElementsByTagName_button()
+  for i = 0 to (solutionButtons.length - 1. |> int) do
+    solutionButtons.[i].innerHTML <- state.NotePropositions.[i] |> string
+| _ -> ()
+
+let init (container: Browser.HTMLElement) (initialState: Game.State) onSolutionChoosen =
   let mutable state = initialState
   let mutable viewport = FretboardView.scaleFretboard Browser.window.innerWidth
+  let mutable eventsSet = false
   let canvas = container.getElementsByTagName_canvas().[0]
   let ctx = canvas.getContext_2d()
   let rescale availableWidth =
@@ -42,9 +63,18 @@ let init (container: Browser.HTMLElement) (initialState: Game.GameState) =
   let rec redraw _timestamp =
     ctx.clearRect(0., 0., canvas.width, canvas.height)
     state |> draw ctx viewport
+    state |> drawUI container viewport
     Browser.window.requestAnimationFrame (Browser.FrameRequestCallback redraw) |> ignore
-  Browser.window.addEventListener_resize (fun (_) -> rescale (Browser.window.innerWidth); null)
+  Browser.window.addEventListener_resize (fun _ -> rescale (Browser.window.innerWidth); null)
   rescale (Browser.window.innerWidth)
   redraw 0.
   container.style.display <- "block"
-  (fun s -> state <- s; ())
+  (fun newState dispatch ->
+    state <- newState
+    if not eventsSet then
+      let solutionButtons = container.getElementsByTagName_button()
+      for i = 0 to (solutionButtons.length - 1. |> int) do
+        solutionButtons.[i].onclick <- (fun (_) -> i |> onSolutionChoosen |> dispatch; null)
+        eventsSet <- true
+    ()
+  )
