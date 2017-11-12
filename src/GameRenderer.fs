@@ -45,7 +45,7 @@ let private drawUI (ctx: Browser.HTMLElement) _viewport = function
 | Game.InGame state ->
   let solutionButtons = ctx.getElementsByTagName_button()
   for i = 0 to (solutionButtons.length - 1. |> int) do
-    solutionButtons.[i].innerHTML <- state.NotePropositions.[i] |> string
+    solutionButtons.[i].innerHTML <- state.NotePropositions.[i] |> Febus.noteName
 | _ -> ()
 
 let init (container: Browser.HTMLElement) (initialState: Game.State) onSolutionChoosen =

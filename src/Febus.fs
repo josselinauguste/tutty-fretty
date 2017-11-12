@@ -97,3 +97,9 @@ let substractInterval note = function
 
 let intervalFromSemitones semitones =
   SemitoneArithmetic.intervalFromSemitones semitones
+
+let noteName note =
+  note
+  |> string
+  |> (fun n -> n.Replace("Flat", "♭"))
+  |> (fun n -> n.Replace("Sharp", "♯"))

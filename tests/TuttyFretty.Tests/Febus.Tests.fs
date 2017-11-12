@@ -67,4 +67,15 @@ let tests =
         (intervalFromSemitones semitones) <> Unison
       )
     ]
+
+    testList "get note name" [
+      testCase "get name of a natural note" <| fun _ ->
+        Expect.equal (noteName Febus.C) "C" ""
+
+      testCase "get name of a sharp note" <| fun _ ->
+        Expect.equal (noteName CSharp) "C♯" ""
+
+      testCase "get name of a flat note" <| fun _ ->
+        Expect.equal (noteName DFlat) "D♭" ""
+    ]
   ]
